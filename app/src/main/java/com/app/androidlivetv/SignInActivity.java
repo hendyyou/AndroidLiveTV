@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.app.util.Constant;
 import com.app.util.IsRTL;
 import com.app.util.NetworkUtils;
+import com.facebook.ads.*;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -47,6 +49,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     MyApplication MyApp;
     ProgressDialog pDialog;
     CheckBox checkBox;
+    private AdView adView;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -67,6 +70,36 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         btnForgotPass = findViewById(R.id.button_forgot);
         btnRegister = findViewById(R.id.button_sign_up);
         checkBox = findViewById(R.id.checkBox);
+
+        adView = new AdView(this, "193554061465594_193656174788716", AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.ad01);
+        adContainer.addView(adView);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                // Ad error callback
+                Toast.makeText(SignInActivity.this, "Error: " + adError.getErrorMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+            }
+        });
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        adView.loadAd();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,5 +270,13 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
 
     public void dismissProgressDialog() {
         pDialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }
