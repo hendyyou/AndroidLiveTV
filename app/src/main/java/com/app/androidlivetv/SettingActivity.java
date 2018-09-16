@@ -12,9 +12,18 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.app.util.BannerAds;
 import com.app.util.IsRTL;
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.InterstitialAd;
 import com.onesignal.OneSignal;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -37,6 +46,67 @@ public class SettingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.menu_setting));
         setSupportActionBar(toolbar);
+
+
+
+
+
+
+
+        final InterstitialAd interstitialAd = new InterstitialAd(this, "193554061465594_193654451455555");
+        interstitialAd.setAdListener(new AbstractAdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                super.onError(ad, adError);
+                Toast.makeText(MyApp, adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                super.onAdLoaded(ad);
+                interstitialAd.show();
+            }
+        });
+
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        interstitialAd.loadAd();
+
+
+
+
+        AdView adView = new AdView(this, "193554061465594_193656174788716", AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.ad03);
+        adContainer.addView(adView);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                // Ad error callback
+                Toast.makeText(SettingActivity.this, "Error: " + adError.getErrorMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+            }
+        });
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        adView.loadAd();
+
+
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);

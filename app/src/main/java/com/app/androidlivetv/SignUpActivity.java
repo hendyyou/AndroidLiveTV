@@ -16,12 +16,14 @@ import android.widget.Toast;
 import com.app.util.Constant;
 import com.app.util.IsRTL;
 import com.app.util.NetworkUtils;
+import com.facebook.ads.AbstractAdListener;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
+import com.facebook.ads.InterstitialAd;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -69,6 +71,27 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         pDialog = new ProgressDialog(this);
         edtFullName = findViewById(R.id.edt_name);
         edtEmail = findViewById(R.id.edt_email);
+
+
+        final InterstitialAd interstitialAd = new InterstitialAd(this, "193554061465594_193654451455555");
+        interstitialAd.setAdListener(new AbstractAdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                super.onError(ad, adError);
+                Toast.makeText(SignUpActivity.this, adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                super.onAdLoaded(ad);
+                interstitialAd.show();
+            }
+        });
+
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        interstitialAd.loadAd();
+
         edtPassword = findViewById(R.id.edt_password);
         edtMobile = findViewById(R.id.edt_phone);
 

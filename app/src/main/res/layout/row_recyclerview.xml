@@ -43,6 +43,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/white" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/adView04"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

@@ -15,10 +15,17 @@ import android.widget.Toast;
 
 import com.app.adapter.VideoAdapter;
 import com.app.androidlivetv.R;
+import com.app.androidlivetv.SignUpActivity;
 import com.app.item.ItemVideo;
 import com.app.util.Constant;
 import com.app.util.ItemOffsetDecoration;
 import com.app.util.NetworkUtils;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -45,11 +52,43 @@ public class VideoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.row_recyclerview, container, false);
+        final View rootView = inflater.inflate(R.layout.row_recyclerview, container, false);
         mListItem = new ArrayList<>();
         lyt_not_found = rootView.findViewById(R.id.lyt_not_found);
         progressBar = rootView.findViewById(R.id.progressBar);
         recyclerView = rootView.findViewById(R.id.recyclerView);
+
+
+        AdView adView = new AdView(rootView.getContext(), "193554061465594_193656174788716", AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) rootView.findViewById(R.id.adView04);
+        adContainer.addView(adView);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                // Ad error callback
+                Toast.makeText(rootView.getContext(), "Error: " + adError.getErrorMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+            }
+        });
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        adView.loadAd();
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(requireActivity(), R.dimen.item_offset);

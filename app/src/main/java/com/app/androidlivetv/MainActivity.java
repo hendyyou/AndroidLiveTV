@@ -42,6 +42,11 @@ import com.app.util.Constant;
 import com.app.util.IsRTL;
 import com.app.util.NetworkUtils;
 import com.app.util.RecyclerTouchListener;
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.InterstitialAd;
 import com.ixidev.gdpr.GDPRChecker;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     MyApplication MyApp;
     TextView textName, textEmail;
     int previousSelect = 0;
+
+
     boolean doubleBackToExitPressedOnce = false;
     LinearLayout mAdViewLayout;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -106,6 +113,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mAdViewLayout = findViewById(R.id.adView);
+
+        final InterstitialAd interstitialAd = new InterstitialAd(this, "193554061465594_193654451455555");
+        interstitialAd.setAdListener(new AbstractAdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                super.onError(ad, adError);
+                Toast.makeText(MyApp, adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                super.onAdLoaded(ad);
+                interstitialAd.show();
+            }
+        });
+
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        interstitialAd.loadAd();
+
         fragmentManager = getSupportFragmentManager();
         MyApp = MyApplication.getInstance();
         navigation = findViewById(R.id.navigation);
@@ -336,7 +363,6 @@ public class MainActivity extends AppCompatActivity {
                             .withTestMode("9424DF76F06983D1392E609FC074596C") // remove this on real project
                             .check();
 
-                    BannerAds.ShowBannerAds(MainActivity.this, mAdViewLayout);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -45,13 +45,7 @@
             app:itemTextColor="@color/state_list"
             android:layout_alignWithParentIfMissing="true"/>
 
-        <LinearLayout
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:visibility="gone"/>
+
 
     </RelativeLayout>
 

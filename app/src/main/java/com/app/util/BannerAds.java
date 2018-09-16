@@ -28,7 +28,7 @@ public class BannerAds {
             mAdView.loadAd(builder.build());
             mAdViewLayout.addView(mAdView);
         } else {
-            mAdViewLayout.setVisibility(View.GONE);
+
         }
     }
 }

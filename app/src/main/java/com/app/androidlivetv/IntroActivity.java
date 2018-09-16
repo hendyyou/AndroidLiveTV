@@ -11,9 +11,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.app.fragment.IntroFragment;
 import com.app.util.IsRTL;
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.InterstitialAd;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -39,6 +45,25 @@ public class IntroActivity extends AppCompatActivity {
         circle2 = findViewById(R.id.circle2);
         circle3 = findViewById(R.id.circle3);
 
+
+        final InterstitialAd interstitialAd = new InterstitialAd(this, "193554061465594_193654451455555");
+        interstitialAd.setAdListener(new AbstractAdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                super.onError(ad, adError);
+                Toast.makeText(IntroActivity.this, adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                super.onAdLoaded(ad);
+                interstitialAd.show();
+            }
+        });
+
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        interstitialAd.loadAd();
         btnNext = findViewById(R.id.button_next);
         btnSkip = findViewById(R.id.button_skip);
 

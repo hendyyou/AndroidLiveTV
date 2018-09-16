@@ -68,6 +68,27 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         btnLogin = findViewById(R.id.button_login);
         btnSkip = findViewById(R.id.button_skip);
         btnForgotPass = findViewById(R.id.button_forgot);
+
+
+
+        final InterstitialAd interstitialAd = new InterstitialAd(this, "193554061465594_193654451455555");
+        interstitialAd.setAdListener(new AbstractAdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                super.onError(ad, adError);
+                Toast.makeText(SignInActivity.this, adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                super.onAdLoaded(ad);
+                interstitialAd.show();
+            }
+        });
+
+        AdSettings.addTestDevice("768ef5d6-74f7-4b77-8df1-09f0c16fb186");
+
+        interstitialAd.loadAd();
         btnRegister = findViewById(R.id.button_sign_up);
         checkBox = findViewById(R.id.checkBox);
 
