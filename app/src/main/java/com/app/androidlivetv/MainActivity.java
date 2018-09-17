@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void hideShowBottomView(boolean visibility) {
         navigation.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        mAdViewLayout.setVisibility(visibility ? View.GONE : View.VISIBLE);
+//        mAdViewLayout.setVisibility(visibility ? View.GONE : View.VISIBLE);
     }
 
     public void navigationItemSelected(int position) {
